@@ -23,7 +23,7 @@ def extract_timestamp(log_line):
         timestamp_str = match.group()
         return datetime.strptime(f"{year}-" + timestamp_str, '%Y-%m-%d %H:%M:%S.%f')
 
-    # Regex for "YYYY-MM-DDTHH:MM:SSZ" or "YYYY-MM-DDTHH:MM:SS.mmmZ" or "MM-DD HH:MM:SS.mmm"
+    # Regex for "YYYY-MM-DDTHH:MM:SSZ" or "YYYY-MM-DDTHH:MM:SS.mmmZ" or "YYYY-MM-DD HH:MM:SS.mmm"
     match = re.search(r'\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{3})?(?:Z)?', log_line)
     if match:
         timestamp_str = match.group()
