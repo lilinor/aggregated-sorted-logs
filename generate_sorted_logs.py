@@ -1,7 +1,15 @@
 import glob
 import re
 import os
+import argparse
 from datetime import datetime
+
+# Parse arguments passed at the run of the script
+def parse_arguments ():
+    parser = argparse.ArgumentParser(description='Filter and sort log files based on a specified pattern')
+    parser.add_argument('--search-patterns', '-p', nargs='+', type=str, help='Patterns to search in log lines')
+    parser.add_argument('--output-file', '-o', type=str, default='aggregated_logs.log', help='Output file name for sorted logs')
+    return parser.parse_args()
 
 # Extracts timestamp from a line of a log
 def extract_timestamp(log_line):
@@ -38,9 +46,10 @@ def create_output_file (output_file_name):
 
     # Gets the absolute output file path
     return os.path.join(output_directory, output_file_name)
-    
-search_patterns = [] #To fill if those logs needed to be filtered
 
+args = parse_arguments()
+    
+search_patterns = args.search_patterns
 # Read all log files
 scanned_log_files = glob.glob(os.getcwd()+ '/*.log')
 log_entries = []
@@ -57,7 +66,7 @@ for log_file in scanned_log_files:
 # Sort logs by timestamps
 sorted_logs = sorted(log_entries, key=lambda x: x[0])
 
-output_file_path = create_output_file('sorted_logs.log')
+output_file_path = create_output_file(args.output_file)
 
 with open(output_file_path, 'w') as output_file:
     for entry in sorted_logs:
