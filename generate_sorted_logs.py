@@ -13,11 +13,15 @@ def parse_arguments ():
 
 # Extracts timestamp from a line of a log
 def extract_timestamp(log_line):
+
+    #get current year
+    year = datetime.now().year
+
     # Regex for "MM-DD HH:MM:SS.mmm"
     match = re.search(r'\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d{3}', log_line)
     if match:
         timestamp_str = match.group()
-        return datetime.strptime('2024-' + timestamp_str, '%Y-%m-%d %H:%M:%S.%f')
+        return datetime.strptime(f"{year}-" + timestamp_str, '%Y-%m-%d %H:%M:%S.%f')
 
     # Regex for "YYYY-MM-DDTHH:MM:SSZ" or "YYYY-MM-DDTHH:MM:SS.mmmZ" or "MM-DD HH:MM:SS.mmm"
     match = re.search(r'\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{3})?(?:Z)?', log_line)
