@@ -51,32 +51,38 @@ def create_output_file (output_file_name):
     # Gets the absolute output file path
     return os.path.join(output_directory, output_file_name)
 
-args = parse_arguments()
-    
-search_patterns = args.search_patterns
-# Read all log files
-scanned_log_files = glob.glob(os.getcwd()+ '/*.log')
-log_entries = []
+def main():
+    args = parse_arguments()
+        
+    search_patterns = args.search_patterns
+    # Read all log files
+    scanned_log_files = glob.glob(os.getcwd()+ '/*.log')
+    log_entries = []
 
-for log_file in scanned_log_files:
-    print(f"Reading log file: {log_file}")  # Displays the scanned log files
-    with open(log_file, 'r') as file:
-        for line in file:
-            if not search_patterns or any(pattern in line for pattern in search_patterns): #handles if there's no need to filter the logs
-                timestamp = extract_timestamp(line)
-                if timestamp:
-                    log_entries.append((timestamp, line))
+    for log_file in scanned_log_files:
+        print(f"Reading log file: {log_file}")  # Displays the scanned log files
+        with open(log_file, 'r') as file:
+            for line in file:
+                if not search_patterns or any(pattern in line for pattern in search_patterns): #handles if there's no need to filter the logs
+                    timestamp = extract_timestamp(line)
+                    if timestamp:
+                        log_entries.append((timestamp, line))
 
-# Sort logs by timestamps
-sorted_logs = sorted(log_entries, key=lambda x: x[0])
+    # Sort logs by timestamps
+    sorted_logs = sorted(log_entries, key=lambda x: x[0])
 
-output_file_path = create_output_file(args.output_file)
+    output_file_path = create_output_file(args.output_file)
 
-with open(output_file_path, 'w') as output_file:
-    for entry in sorted_logs:
-        output_file.write(entry[1])
+    with open(output_file_path, 'w') as output_file:
+        for entry in sorted_logs:
+            output_file.write(entry[1])
 
-if search_patterns:
-    print(f"All sorted logs matching '{search_patterns}' are written in {output_file_path}")
-else: 
-    print(f"All sorted logs are written in {output_file_path}")
+    if search_patterns:
+        print(f"All sorted logs matching '{search_patterns}' are written in {output_file_path}")
+    else: 
+        print(f"All sorted logs are written in {output_file_path}")
+
+#if script called from terminal
+if __name__ == '__main__':
+    main()
+
