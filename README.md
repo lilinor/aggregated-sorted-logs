@@ -11,6 +11,8 @@ For other timestamps, you can add your own regexp in the ```extract_timestamp```
 
 ## Prerequisites
 
+Python min. version : 3.9
+
 Have all the logs in one folder and copy the ```generate_sorted_logs.py``` in this folder.
 You can test with the logs example provided in the [dataset_example folder](https://github.com/lilinor/aggregated-sorted-logs/tree/main/dataset_example).
 
